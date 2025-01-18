@@ -1,0 +1,89 @@
+\documentclass{article}
+\usepackage{hwopt}
+\usepackage{amsmath}	% Package for AMS
+\usepackage{amsthm}     % Package for AMS-therom
+\usepackage{amssymb}	% Package for AMS-symbol
+\usepackage{bm}
+
+\newcommand{\xB}{\bm{x}}
+\newcommand{\yB}{\bm{y}}
+\newcommand{\RBB}{\mathbb{R}}
+\newcommand{\FM}{\mathcal{F}}
+\newcommand{\functiontype}[3]{\FM_{#1}^{#2,#3}(\RBB^n)}
+\newcommand{\normgen}[1]{\left\| #1 \right\|}
+
+%%%%%%%%%%%%%%%%%
+%     Title     %
+%%%%%%%%%%%%%%%%%
+\title{Coursework (3) for \emph{Introductory Lectures on Optimization}}
+\author{Xiaoyu Wang \\ 3220104364}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{excercise}\label{e0}
+	Suppose that $f : \mathbb{R}^n \rightarrow \mathbb{R}$ is L-smooth ($C_L^{1,1}$), and  $\mu$-PL, that is 
+	\[
+	\textrm{$\mu$-PL:~~}\frac{1}{2} \| \nabla f(\xB) \|_2^2 \geq \mu \left( f(\xB) - f(\xB^*) \right),
+	\]
+	then GD iterates with step size $h_k = 1/L $ converge linearly, i.e.
+	\[
+	f(\xB_{k}) - f(\xB^*) \leq \left( 1 - \frac{\mu}{L} \right)^k \left(  f(\xB_0) - f(\xB^*)\right).
+	\]
+\end{excercise}
+
+\begin{PROOF}{e0}Proof:
+	According to conditions we have:
+\begin{enumerate}
+	\item $f : \mathbb{R}^n \rightarrow \mathbb{R}$ is L-smooth ($C_L^{1,1}$), and  $\mu$-PL, that is 
+		\[
+			\|\nabla f(\xB) - \nabla f(\yB)\|_2 \leq L \|\xB - \yB\|_2 \quad \forall \xB, \yB \in \mathbb{R}^n
+	  	\]
+		and in the class of week2,we learned that:\\
+		\[ \lvert f(\bm y) - f(\bm x)-\langle\nabla f(\bm x),\bm y - \bm x\rangle \rvert\le \frac{L}{2}\lVert \bm y-\bm x\rVert^2_2 \]
+		\[\therefore  f(\bm y) \le f(\bm x) + \langle\nabla f(\bm x),\bm y - \bm x\rangle + \frac{L}{2}\lVert \bm y-\bm x\rVert^2_2 \]
+		\item  \( f \) satisfies the \(\mu\)-PL condition:
+		\[
+		\frac{1}{2} \|\nabla f(\xB)\|_2^2 \geq \mu \left( f(\xB) - f(\xB^*) \right)
+		\]
+		where \( \xB^* \) is the minimizer of \( f \).
+\end{enumerate}	
+	We consider \(\yB = \xB - h\nabla f(\xB) \)
+\begin{align}
+		f(\yB) \le f(\xB)+\langle \nabla f(\xB),\yB-\xB\rangle +\frac{L}{2}\lVert \yB-\xB\rVert^2\\ 
+		= f(\xB)-h\lVert\nabla f(\xB)\rVert^2+\frac{h^2}{2}L\lVert\nabla f(\xB)\rVert^2 \\
+		= f(\xB)-h\left(1-\frac{h}{2}L\right)\lVert\nabla f(\xB)\rVert^2 
+\end{align}
+	now $h = h_k = \frac{1}{L}$
+	\[
+	\therefore f(\yB) \le f(\xB)-\frac{1}{2L}\lVert\nabla f(\xB)\rVert^2 
+	\]
+	We start by analyzing the change in the function value from one iteration to the next. \\
+	Use $\yB = \xB_{k} \& \xB = \xB_{k-1}$ we have:
+	\[
+	f(\xB_{k}) \leq f(\xB_{k-1}) - \frac{1}{2L} \|\nabla f(\xB_{k-1})\|_2^2
+	\]
+	Using the \(\mu\)-PL condition,we have:
+	\[
+	f(\xB_{k}) \leq f(\xB_{k-1}) - \frac{1}{2L} \cdot 2\mu \left( f(\xB_{k-1}) - f(\xB^*) \right)\\
+	\]
+	\[
+	\therefore f(\xB_{k}) \leq f(\xB_{k-1}) - \frac{\mu}{L} \left( f(\xB_{k-1}) - f(\xB^*) \right).
+	\]
+	\[
+	\therefore f(\xB_{k}) - f(\xB^*) \leq f(\xB_{k-1}) - f(\xB^*) - \frac{\mu}{L} \left( f(\xB_{k-1}) - f(\xB^*) \right)
+	= \left(1 - \frac{\mu}{L}\right) f(\xB_{k-1}) - f(\xB^*)
+	\]
+
+	By recursively applying this inequality, so we get:
+	\[
+	f(\xB_{k}) - f(\xB^*) \leq \left(1 - \frac{\mu}{L}\right) \left(f(\xB_{k-1}) - f(\xB^*)\right) \leq \left(1 - \frac{\mu}{L}\right)^2 \left(f(\xB_{k-1}) - f(\xB^*) \right) \leq \cdots \leq \left(1 - \frac{\mu}{L}\right)^{k} \left(f(\xB_0) - f(\xB^*)\right)
+	\]
+	\[
+	\therefore f(\xB_{k}) - f(\xB^*) \leq \left(1 - \frac{\mu}{L}\right)^k \left( f(\xB_0) - f(\xB^*) \right)
+	\]
+	So, the proof is complete.
+\end{PROOF}
+
+\end{document}

@@ -1,0 +1,213 @@
+\documentclass{article}
+\usepackage{hwopt}
+\usepackage{amsmath}	% Package for AMS
+\usepackage{amsthm}     % Package for AMS-therom
+\usepackage{amssymb}	% Package for AMS-symbol
+\usepackage{bm}
+
+\newcommand{\aB}{\bm{a}}
+\newcommand{\bB}{\bm{b}}
+\newcommand{\xB}{\bm{x}}
+\newcommand{\yB}{\bm{y}}
+\newcommand{\vB}{\bm{v}}
+\newcommand{\uB}{\bm{u}}
+\newcommand{\gB}{\bm{g}}
+\newcommand{\RBB}{\mathbb{R}}
+\newcommand{\FM}{\mathcal{F}}
+\newcommand{\SM}{\mathcal{S}}
+\newcommand{\LM}{\mathcal{L}}
+\newcommand{\domf}{\textrm{dom}\;f}
+\newcommand{\functiontype}[3]{\FM_{#1}^{#2,#3}(\RBB^n)}
+\newcommand{\normgen}[1]{\left\| #1 \right\|}
+\newcommand{\normone}[1]{\left\| #1 \right\|_1}
+\newcommand{\strongconvextype}[2]{\SM_{#1}^{#2}(\RBB^n)}
+\newcommand{\argmin}{\mathop{\rm argmin}}
+
+%%%%%%%%%%%%%%%%%
+%     Title     %
+%%%%%%%%%%%%%%%%%
+\title{Coursework (5) for \emph{Introductory Lectures on Optimization}}
+\author{Xiaoyu Wang \\ 3220104364}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{excercise}\label{e0}
+Prove the following theorem: \\
+Let $\normgen{\cdot}$ be a vector norm in $\RBB^n$,  then 
+\[
+\partial \normgen{\cdot} = \left\{ V(\xB) \triangleq \left\{  \vB \in \RBB^n \big| \innerproduct{\vB}{\xB} = \normgen{\xB}, \normgen{\vB}_* \leq 1  \right\} \right\},
+\]
+where $\normgen{\vB}_*$ is the dual norm of $\normgen{\cdot}$, defined as
+\[
+\normgen{\vB}_* \triangleq \sup_{ \normgen{\uB} \leq 1} \innerproduct{\vB}{\uB}.
+\]	
+\end{excercise}
+\begin{PROOF}{e0}The answer is as follows:
+
+	We prove the theorem by the $V(\xB)\subset\partial \normgen{\xB}$ and $\partial \normgen{\xB}\subset V(\xB)$ 
+
+	\begin{enumerate}
+		\item $V(\xB)\subset\partial \normgen{\xB}$
+		
+		Let $\vB \in V(\xB)$, and $\forall \yB \in \RBB^n$, we have
+
+		\begin{align}
+			\normgen{\xB} + \innerproduct{\vB}{\yB-\xB} &= \normgen{\xB} + \innerproduct{\vB}{\yB} - \innerproduct{\vB}{\xB} \\
+			&= \normgen{\xB} + \innerproduct{\vB}{\yB} - \normgen{\xB} \\
+			&= \innerproduct{\vB}{\yB} \\
+			&\leq \normgen{\yB} \cdot \normgen{\vB}_*  \\
+			&\leq \normgen{\yB}
+		\end{align}
+
+		(2)(5)'s reason is that $\vB \in V(\xB)$.
+
+		(4)'s reason is that $\textbf{Holder's inequality}$.
+
+		That is $\normgen{\yB}\geq \normgen{\xB} + \innerproduct{\vB}{\yB-\xB}$,
+		since of arbitrariness of $\yB$, it is the definition of sub-gradient of 
+		$\normgen{\cdot}$ and $\vB \in \partial \normgen{\xB}$.
+
+		So $V(\xB)\subset\partial \normgen{\xB}$.
+		\item $\partial \normgen{\xB}\subset V(\xB)$
+		
+		Let $\vB \in \partial \normgen{\xB}$, and $\forall \yB \in \RBB^n$, we have:
+		\begin{equation}
+			\normgen{\yB} \geq \normgen{\xB} + \innerproduct{\vB}{\yB-\xB}
+		\end{equation}
+		\begin{equation}
+			\therefore \forall \yB \in \RBB^n, \innerproduct{\vB}{\yB} - \normgen{\yB} \leq \innerproduct{\vB}{\xB} - \normgen{\xB}
+		\end{equation}
+		\begin{equation}
+			\therefore \normgen{\vB}_* \text{Fenchel conjugate} \triangleq  \sup_{\yB} \left\{  \innerproduct{\vB}{\yB} -\normgen{\yB}\right\} \leq \innerproduct{\vB}{\xB} - \normgen{\xB}
+		\end{equation}
+		So we get:
+		\begin{equation}
+			\normgen{\vB}_* = \begin{cases}
+				0&\normgen{\vB}_* \leq 1\\
+				+\infty&\normgen{\vB}_* > 1
+			\end{cases}
+		\end{equation}
+		Since $\innerproduct{\vB}{\xB}-\normgen{\xB}$ is always finite, we have $\normgen{\vB}_* \leq 1$.
+		\begin{align}
+			0 &\leq \innerproduct{\vB}{\xB} - \normgen{\xB} \\
+			&\leq \normgen{\xB} \cdot \normgen{\vB}_* -\normgen{\xB}\\
+			&\leq \normgen{\xB} \cdot 1 -\normgen{\xB}\  \because \normgen{\vB}_* \leq 1\\
+			&= 0
+		\end{align}
+		So we have $\innerproduct{\vB}{\xB} = \normgen{\xB}$,that implies $\partial \normgen{\xB}\subset V(\xB)$.
+	\end{enumerate}
+	Therefore, we have $\partial \normgen{\xB} = V(\xB)$.
+
+\end{PROOF}
+
+\begin{excercise}\label{e1}
+Write down the subdifferentials of following functions. 
+\begin{enumerate}
+	\item $f(\xB) = |\xB|, \xB \in \RBB^1$.\vspace{8pt}
+	\item $f(\xB) = \sum_{i=1}^{m} | \innerproduct{\aB_i}{\xB} - \bB_i|$.\vspace{8pt}
+	\item $f(\xB) = \max_{1 \leq i \leq n} \xB^{(i)}$.\vspace{8pt}
+	\item $f(\xB) = \normgen{\xB}$.\vspace{8pt}
+	\item $f(\xB) = \normone{\xB} = \sum_{i=1}^{n} |\xB^{(i)}|$.
+\end{enumerate}
+\end{excercise}
+\begin{SOLUTION}{e1}The answer is as follows:
+
+	\begin{enumerate}
+		\item $f(\xB) = |\xB|, \xB \in \RBB^1$.
+		
+		\begin{equation}
+			f(\xB) = \max_{-1\leq t \leq 1} \gB \cdot \xB \Rightarrow \partial f(\bm{0}) = [-1, 1]
+		\end{equation}
+
+		\item $f(\xB) = \sum_{i=1}^{m} | \innerproduct{\aB_i}{\xB} - \bB_i|$
+		
+			Denote
+			\[
+				\begin{aligned}
+					I_-(\xB) &= \{ i \mid \innerproduct{\aB_i}{\xB_i} - \bB_i < 0 \},\\
+					I_+(\xB) &= \{ i \mid \innerproduct{\aB_i}{\xB_i} - \bB_i > 0 \},\\
+					I_0(\xB) &= \{ i \mid \innerproduct{\aB_i}{\xB_i} - \bB_i = 0 \}.
+				\end{aligned}	
+			\]
+			Then 
+			\[
+				\partial f(\xB)	= \sum_{i \in I_+(\xB)} \bm{a}_i - \sum_{i \in I_-(\xB)} \bm{a}_i + \sum_{i \in I_0(\xB)} [-\bm{a}_i, \bm{a}_i].
+			\]
+		\item $f(\xB) = \max_{1 \leq i \leq n} \xB^{(i)}$
+		
+			Denote:$I(\xB) = \{ i \mid \xB^{(i)} = f(\xB) \}$
+			
+			Then we have:
+			\[
+				\partial f(\xB) = \begin{cases}
+					\mathrm{Conv} \{ \bm{e}_i \mid 1 \le i \le n \} \equiv \Delta_n, & \xB = \bm{0},\\
+					\mathrm{Conv} \{ \bm{e}_i \mid i \in I(\xB) \}, & \xB \ne \bm{0}.	
+				\end{cases}
+			\]
+		\item $f(\xB) = \normgen{\xB}$
+		
+			\[
+				\partial f(\xB)	= \begin{cases}
+					B_2(0, 1) = \{ \xB \in \RBB^n \mid \|\xB\| \le 1 \}, &\xB = 0,\\
+					\{\xB / \|\xB\|\}, &\xB \ne 0.
+				\end{cases}
+			\]
+		\item $f(\xB) = \normone{\xB} = \sum_{i=1}^{n} |\xB^{(i)}|$
+			
+		Denote:
+			\[
+				\begin{aligned}
+					I_+(\xB) &= \{ i \mid \xB^{(i)} > 0 \},\\
+					I_-(\xB) &= \{ i \mid \xB^{(i)} < 0 \},\\
+					I_0(\xB) &= \{ i \mid \xB^{(i)} = 0 \}.
+				\end{aligned}	
+			\]
+			Then we have
+			\[
+				\partial f(\xB)	= \begin{cases}
+					B_\infty(0, 1) = \{ \xB \in \RBB^n \mid \max_{1 \le i \le n} |\xB^{(i)}| \le 1 \}, &\xB = 0,\\
+					\sum_{i \in I_+(\xB)} \bm{e}_i - \sum_{i \in I_-(\xB)} \bm{e}_i + \sum_{i \in I_0(\xB)} [-\bm{e}_i, \bm{e}_i], &\xB \ne 0.
+				\end{cases}
+			\]
+	\end{enumerate}
+
+\end{SOLUTION}
+
+\begin{excercise}\label{e2}
+Please write down three sequences and prove that they satisfy the following conditions:
+\[
+ h_k > 0, h_k \to 0, \sum_{k=0}^{\infty} h_k = \infty.
+ \]
+\end{excercise}
+
+\begin{SOLUTION}{e2}The answer is as follows:
+	
+	\begin{enumerate}
+		\item $h_k = \frac{1}{k+1}$
+
+			\begin{align}
+				h_k &= \frac{1}{k+1} >0 \\ 
+				\lim_{k \to \infty} h_k &= \lim_{k \to \infty}\frac{1}{k+1} = 0\\
+				\sum_{k=0}^{\infty} h_k &= \sum_{k=0}^{\infty} \frac{1}{k+1} = \infty.
+				\because \sum_{k=0}^{\infty} \frac{1}{k+1} \text{is }\textbf{harmonic progression}.
+			\end{align}
+				
+		\item $h_k = \frac{1}{\sqrt{k+1} }$
+
+			\begin{align}
+				h_k &= \frac{1}{\sqrt{k+1}} >0 \\ 
+				\lim_{k \to \infty} h_k &= \lim_{k \to \infty}\frac{1}{\sqrt{k+1}} = 0\\
+				\sum_{k=0}^{\infty} h_k &= \sum_{k=0}^{\infty} \frac{1}{\sqrt{k+1}} \ge \sum_{k=0}^{\infty} \frac{1}{k+1} = \infty.
+			\end{align}
+		\item $h_k = \frac{1}{\ln{(k+2)} }$
+
+			\begin{align}
+				h_k &= \frac{1}{\ln{(k+2)}} >0 \\ 
+				\lim_{k \to \infty} h_k &= \lim_{k \to \infty}\frac{1}{\ln{(k+2)}} = 0\\
+				\sum_{k=0}^{\infty} h_k &= \sum_{k=0}^{\infty} \frac{1}{\ln{(k+2)}} > \sum_{k=0}^{\infty} \frac{1}{k+1} = \infty.
+			\end{align}
+	\end{enumerate}
+\end{SOLUTION}
+\end{document}

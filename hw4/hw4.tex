@@ -1,0 +1,125 @@
+\documentclass{article}
+\usepackage{hwopt}
+\usepackage{amsmath}	% Package for AMS
+\usepackage{amsthm}     % Package for AMS-therom
+\usepackage{amssymb}	% Package for AMS-symbol
+\usepackage{bm}
+
+\newcommand{\xB}{\bm{x}}
+\newcommand{\yB}{\bm{y}}
+\newcommand{\gB}{\bm{g}}
+\newcommand{\RBB}{\mathbb{R}}
+\newcommand{\FM}{\mathcal{F}}
+\newcommand{\SM}{\mathcal{S}}
+\newcommand{\LM}{\mathcal{L}}
+\newcommand{\domf}{\textrm{dom}\;f}
+\newcommand{\functiontype}[3]{\FM_{#1}^{#2,#3}(\RBB^n)}
+\newcommand{\normgen}[1]{\left\| #1 \right\|}
+\newcommand{\strongconvextype}[2]{\SM_{#1}^{#2}(\RBB^n)}
+\newcommand{\argmin}{\mathop{\rm argmin}}
+
+%%%%%%%%%%%%%%%%%
+%     Title     %
+%%%%%%%%%%%%%%%%%
+\title{Coursework (4) for \emph{Introductory Lectures on Optimization}}
+\author{Xiaoyu Wang \\ 3220104364}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{excercise}\label{e0}
+Prove the following theorem: \\
+for any $\xB_0 \in \domf$, all vectors $\gB \in \partial f(\xB_0)$ are supporting to the level set $\LM_f (f(\xB_0))$:
+\begin{equation}
+	\innerproduct{\gB}{\xB_0 - \xB} \geq 0, \;\;\; \forall \xB \in \LM_f(f(\xB_0)) \equiv \{ \xB \in \domf: f(\xB) \leq f(\xB_0) \}.\nonumber
+\end{equation}
+\end{excercise}
+\begin{PROOF}{e0}The answer is as follows:
+
+	\[\because \gB \in \partial f(\xB_0)\]
+	\[
+		\therefore \forall \xB \in \domf, f(\xB)\ge f(\xB_0)+\innerproduct{\gB}{\xB-\xB_0}
+	\]	
+	\[
+		\because \xB \in \LM_f(f(\xB_0)) \Rightarrow f(\xB) \leq f(\xB_0)
+	\]
+	So we have:
+	\begin{equation}
+		f(\xB_0) \geq f(\xB) \geq f(\xB_0) + \innerproduct{\gB}{\xB - \xB_0}
+	\end{equation}
+	Thus we have $\innerproduct{\gB}{\xB_0 - \xB} \geq 0$.It's the result we want to prove.
+	\begin{equation}
+		\innerproduct{\gB}{\xB_0 - \xB} \geq 0, \;\;\; \forall \xB \in \LM_f(f(\xB_0)) \equiv \{ \xB \in \domf: f(\xB) \leq f(\xB_0) \}.\nonumber
+	\end{equation}
+\end{PROOF}
+
+\begin{excercise}\label{e1}
+Prove the following theorem: \\
+let $Q \subseteq \domf$ be a closed convex set,  $\xB_0 \in Q$ and 
+ \begin{equation}
+ 	\xB^* = \argmin \{ f(\xB) | \xB \in Q \}.\nonumber
+ \end{equation}
+ Then for any $g \in \partial f(\xB_0)$ we have $\innerproduct{\gB}{\xB_0 - \xB^*} \geq 0$.
+\end{excercise}
+\begin{PROOF}{e1}The answer is as follows:
+
+	\[\because \xB^* = \argmin \{ f(\xB) | \xB \in Q \}, \xB_0 \in Q\]
+	\[
+		\therefore   f(\xB_0) \geq f(\xB^*)
+	\]	
+	\[
+		\because \gB \in \partial f(\xB_0) \Rightarrow f(\xB)\ge f(\xB_0)+\innerproduct{\gB}{\xB-\xB_0},\xB^* \in Q
+	\]
+	\[
+		\therefore f(\xB^*)\ge f(\xB_0)+\innerproduct{\gB}{\xB^*-\xB_0}
+	\]
+	So we have:
+	\begin{equation}
+		f(\xB_0) \geq f(\xB^*) \geq f(\xB_0) + \innerproduct{\gB}{\xB^* - \xB_0}
+	\end{equation}
+	Thus we have $\innerproduct{\gB}{\xB_0 - \xB^*} \geq 0$.It's the result we want to prove.
+
+	\[
+	\text{for any } g \in \partial f(\xB_0) \text{ we have } \innerproduct{\gB}{\xB_0 - \xB^*} \geq 0
+	\]
+
+
+\end{PROOF}
+
+\begin{excercise}\label{e2}
+Prove the following theorem: \\
+let $f$ be closed and convex. Assume that it is differentiable on its domain. Then 
+$\partial f(\xB) = \{ \nabla  f(\xB) \}$
+for any $\xB \in \textrm{int}(\domf)$.
+\end{excercise}
+
+\begin{PROOF}{e2}The answer is as follows:
+
+	As the Lacture10 says $\forall \bm{p} \in \mathbb{R} ^n$, we have:
+	\begin{equation}
+		f^{'}(\bm{x};\bm{p}) = \left\langle \nabla f(\xB),\bm{p}\right\rangle = \lim_{t\rightarrow 0} \frac{f(\xB+t\bm{p})-f(\xB)}{t}
+	\end{equation}
+	$f^{'}(\bm{x};\bm{p})$ is called the directional derivative of $f$ at $\xB$.
+
+	$ \because f^{'}(\bm{x};\bm{p})=\max\left\{\left\langle\bm{g},\bm{p}\right\rangle|\bm{g}\in\partial f(\bm{x})\right\} \forall \bm{\xB}\in \textrm{int}(\domf)$
+	
+	\[
+		\left\langle \nabla f(\xB),\bm{p}\right\rangle = f^{'}(\bm{x};\bm{p}) \ge \left\langle\bm{g},\bm{p}\right\rangle
+	\]
+	\[
+	\left\langle\nabla f(\bm{x})-\bm{g},\bm{p}\right\rangle\ge 0,\forall \bm{p}\in\mathbb{R}^n
+	\]
+	Let $\bm{p}=\bm{g}-\nabla f(\bm{x})$
+	\begin{equation}
+		\therefore \Vert\bm{g}-\nabla f(\bm{x})\Vert^2\le 0 
+	\end{equation}
+	\[
+		\therefore \Vert\bm{g}-\nabla f(\bm{x})\Vert^2 = 0 \Rightarrow \bm{g}=\nabla f(\bm{x})	
+	\]
+	So we have $\bm{g}=\nabla f(\bm{x})$.
+
+	When $\bm{p}$ is arbitrary, $\bm{g}$ is arbitrary,so we can get\ $\partial f(\bm{x})=\left\{\nabla f(\bm{x})\right\}$ for any $\xB \in \textrm{int}(\domf)$.
+
+\end{PROOF}
+\end{document}
